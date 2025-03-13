@@ -4,7 +4,7 @@ pool:
   vmImage: ubuntu-latest
 
   steps:
-  - checkout: self
+  - checkout: none
     persistCredentials: false
     clean: true
     fetchDepth: 1
