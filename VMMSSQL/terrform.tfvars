@@ -1,0 +1,8 @@
+location_name = "centralindia"
+resource_group_name = "dev-az-cin-rg" 
+sql_server_name = "dev-az-cin-sqlserver"
+sql_db_name = "dev-az-cin-sqldb"
+virtual_network_name = "dev-az-cin-vmvnn"
+subnet_name = "dev-az-cin-vmsnn"
+network_interface_name = "dev-az-cin-vmnic"
+virtual_machine_name = "dev-az-cin-vm"

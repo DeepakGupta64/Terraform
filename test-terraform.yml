@@ -1,0 +1,111 @@
+trigger: none
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  bkstrgrg: 'RG1'
+  bkstrg: 'datalakestorage012'
+  bkcontainer: 'tfstate'
+  bkstrgkey: '${{parameters.inputName}}/terraform.tfstate'
+
+parameters:
+  - name: inputName
+    displayName: Enter the Terraform script folder name
+    type: string
+  - name: runValidate
+    displayName: Run Validate Terraform
+    type: boolean
+    default: true
+  - name: runPlan
+    displayName: Run Plan Terraform
+    type: boolean
+    default: true
+  - name: runApply
+    displayName: Run Apply Terraform
+    type: boolean
+    default: false
+  - name: runPlanDestroy
+    displayName: Run Plan Destroy Terraform
+    type: boolean
+    default: false
+  - name: runDestroy
+    displayName: Run Destroy Terraform
+    type: boolean
+    default: false
+
+
+stages:
+  - stage: terraform
+    jobs:
+      - job: terraformTasks
+        steps:
+          # Install Terraform
+          - task: TerraformInstaller@1
+            displayName: Install Terraform
+            inputs:
+              terraformVersion: 'latest'
+
+          # Initialize Terraform
+          - task: TerraformTaskV4@4
+            displayName: Initialize Terraform
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/${{parameters.inputName}}'
+              backendServiceArm: 'Terraform-Service-connection'
+              backendAzureRmResourceGroupName: '$(bkstrgrg)'
+              backendAzureRmStorageAccountName: '$(bkstrg)'
+              backendAzureRmContainerName: '$(bkcontainer)'
+              backendAzureRmKey: '$(bkstrgkey)'
+
+          # Validate Terraform (Conditional)
+          - task: TerraformTaskV4@4
+            displayName: Validate Terraform
+            condition: eq('${{ parameters.runValidate }}', true)
+            inputs:
+              provider: 'azurerm'
+              command: 'validate'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/${{parameters.inputName}}'
+
+          # Plan Terraform (Conditional)
+          - task: TerraformTaskV4@4
+            displayName: Plan Terraform
+            condition: eq('${{ parameters.runPlan }}', true)
+            inputs:
+              provider: 'azurerm'
+              command: 'plan'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/${{parameters.inputName}}'
+              environmentServiceNameAzureRM: 'Terraform-Service-connection'
+
+          # Apply Terraform (Conditional)
+          - task: TerraformTaskV4@4
+            displayName: Apply Terraform
+            condition: eq('${{ parameters.runApply }}', true)
+            inputs:
+              provider: 'azurerm'
+              command: 'apply'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/${{parameters.inputName}}'
+              environmentServiceNameAzureRM: 'Terraform-Service-connection'
+
+          # Plan Destroy Terraform (Conditional)
+          - task: TerraformTaskV4@4
+            displayName: Plan Destroy Terraform
+            condition: eq('${{ parameters.runPlanDestroy }}', true)
+            inputs:
+              provider: 'azurerm'
+              command: 'plan'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/${{parameters.inputName}}'
+              environmentServiceNameAzureRM: 'Terraform-Service-connection'
+              commandOptions: '-destroy'
+
+          # Destroy Terraform (Conditional)
+          - task: TerraformTaskV4@4
+            displayName: Destroy Terraform
+            condition: eq('${{ parameters.runDestroy }}', true)
+            inputs:
+              provider: 'azurerm'
+              command: 'destroy'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/${{parameters.inputName}}'
+              environmentServiceNameAzureRM: 'Terraform-Service-connection'
+              commandOptions: '-auto-approve'
