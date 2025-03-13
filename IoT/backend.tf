@@ -6,3 +6,4 @@ terraform {
     #//key                   = # # Name of the state file
   }
 }
+#backend.tf is not used. Backed details has been added in YML Pipeline (Terraform-CMDs-All-in-One-Pipeline.yml)
