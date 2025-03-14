@@ -58,7 +58,7 @@ stages:
               backendAzureRmStorageAccountName: '$(bkstrg)'
               backendAzureRmContainerName: '$(bkcontainer)'
               backendAzureRmKey: '$(bkstrgkey)'
-              backendAzureRmAccessKey: ${{ secrets.AZURE_STORAGE_KEY }}  # Storage Account Key (Secret Variable) I Added this line of code in YML file. 
+              backendAzureRmAccessKey: $(AZURE_STORAGE_KEY)  # Storage Account Key (Secret Variable) I Added this line of code in YML file. 
 
           # Validate Terraform (Conditional)
           - task: TerraformTaskV4@4
