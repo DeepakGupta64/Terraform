@@ -23,7 +23,7 @@ default     = "AVD-TF-HP"
 
 variable "rfc3339" {
 type        = string
-default     = "2026-03-30T12:43:13Z"
+default     = "2025-03-20T12:43:13Z"
 description = "Registration token expiration"
 }
 
