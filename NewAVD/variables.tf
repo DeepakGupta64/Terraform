@@ -5,7 +5,7 @@ variable "resource_group_location" {
 
 variable "rg_name" {
   type        = string
-  default     = "AE-DEV-AVD-01-RG"
+  default     = "AE-DEV-AVD-01-PO-D-RG"
   description = "Name of the Resource group in which to deploy service objects"
 }
 
@@ -18,7 +18,7 @@ variable "workspace" {
 variable "hostpool" {
   type        = string
   description = "Name of the Azure Virtual Desktop host pool"
-  default     = "AE-DEV-AVD-01-PE-D-HP"
+  default     = "AE-DEV-AVD-01-PO-D-HP"
 }
 
 variable "app_group_name" {
@@ -29,7 +29,7 @@ variable "app_group_name" {
 
 variable "rfc3339" {
   type        = string
-  default     = "2025-03-20T12:43:13Z" #Update this value with a future date
+  default     = "2023-05-20T12:43:13Z"  #Update this value with a future date
   description = "Registration token expiration"
 }
 
@@ -53,5 +53,5 @@ variable "tags" {
 data "azuread_client_config" "AzureAD" {}
 
 data "azuread_group" "AVDGroup" {
-  display_name     = "Win365-Users"  
+  display_name     = "AVD-Administrators"  
 }

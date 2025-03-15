@@ -1,3 +1,19 @@
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "3.49.0"
+    }
+    azuread = {
+      source = "hashicorp/azuread"
+    }
+  }
+}
+
+provider "azurerm" {
+  features {}
+}
+
 # Resource group name is output when execution plan is applied.
 resource "azurerm_resource_group" "rg" {
   name     = var.rg_name
@@ -26,8 +42,8 @@ resource "azurerm_virtual_desktop_host_pool" "hostpool" {
   custom_rdp_properties    = "targetisaadjoined:i:1;drivestoredirect:s:*;audiomode:i:0;videoplaybackmode:i:1;redirectclipboard:i:1;redirectprinters:i:1;devicestoredirect:s:*;redirectcomports:i:1;redirectsmartcards:i:1;usbdevicestoredirect:s:*;enablecredsspsupport:i:1;redirectwebauthn:i:1;use multimon:i:1;enablerdsaadauth:i:1;"
   description              = "${var.prefix} HostPool"
   type                     = "Pooled" #[Pooled or Personal]
-  personal_desktop_assignment_type = "Automatic"
-  load_balancer_type       =  "Persistent"
+  maximum_sessions_allowed = 5
+  load_balancer_type       = "DepthFirst" #[BreadthFirst DepthFirst]
   tags = var.tags
 scheduled_agent_updates {
   enabled = true
