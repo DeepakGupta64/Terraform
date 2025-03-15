@@ -49,9 +49,3 @@ variable "tags" {
     Workload = "Host Pool 01"
   }
 }
-
-data "azuread_client_config" "AzureAD" {}
-
-data "azuread_group" "AVDGroup" {
-  display_name     = "AVD-Administrators"  
-}
