@@ -78,17 +78,3 @@ resource "azurerm_virtual_desktop_workspace_application_group_association" "ws-d
   application_group_id = azurerm_virtual_desktop_application_group.dag.id
   workspace_id         = azurerm_virtual_desktop_workspace.workspace.id
 }
-
-# Assign AAD Group to the Desktop Application Group (DAG)
-resource "azurerm_role_assignment" "AVDGroupDesktopAssignment" {
-  scope                = azurerm_virtual_desktop_application_group.dag.id
-  role_definition_name = "Desktop Virtualization User"
-  principal_id         = data.azuread_group.AVDGroup.object_id
-}
-
-# Assign AAD Group to the Resource Group for RBAC for the Session Host
-resource "azurerm_role_assignment" "RBACAssignment" {
-  scope                = azurerm_resource_group.rg.id
-  role_definition_name = "Virtual Machine User Login"
-  principal_id         = data.azuread_group.AVDGroup.object_id
-}

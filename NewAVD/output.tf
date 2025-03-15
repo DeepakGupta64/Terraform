@@ -22,12 +22,3 @@ output "location" {
   description = "The Azure region"
   value       = azurerm_resource_group.rg.location
 }
-
-data "azuread_group" "aad_group" {
-  display_name = "AVD-Administrators"
-}
-
-output "AVD_user_groupname" {
-  description = "Azure Active Directory Group for AVD users"
-  value       = data.azuread_group.aad_group.display_name
-}
