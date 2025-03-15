@@ -52,6 +52,7 @@ stages:
             inputs:
               provider: 'azurerm'
               command: 'init'
+              commandOptions: '-backend-config="storage_account_name=$(bkstrg)" -backend-config="container_name=$(bkcontainer)" -backend-config="key=$(bkstrgkey)" -backend-config="access_key=$(AZURE_STORAGE_KEY)"'
               workingDirectory: '$(System.DefaultWorkingDirectory)/${{parameters.inputName}}'
               backendServiceArm: 'Terraform-Service-connection'
               backendAzureRmResourceGroupName: '$(bkstrgrg)'
@@ -86,7 +87,6 @@ stages:
             inputs:
               provider: 'azurerm'
               command: 'apply'
-              commandOptions: '-backend-config="storage_account_name=$(bkstrg)" -backend-config="container_name=$(bkcontainer)" -backend-config="key=$(bkstrgkey)" -backend-config="access_key=$(AZURE_STORAGE_KEY)'
               workingDirectory: '$(System.DefaultWorkingDirectory)/${{parameters.inputName}}'
               environmentServiceNameAzureRM: 'Terraform-Service-connection'
 
@@ -110,4 +110,4 @@ stages:
               command: 'destroy'
               workingDirectory: '$(System.DefaultWorkingDirectory)/${{parameters.inputName}}'
               environmentServiceNameAzureRM: 'Terraform-Service-connection'
-              commandOptions: '-auto-approve -backend-config="storage_account_name=$(bkstrg)" -backend-config="container_name=$(bkcontainer)" -backend-config="key=$(bkstrgkey)" -backend-config="access_key=$(AZURE_STORAGE_KEY)'
+              commandOptions: '-auto-approve'
