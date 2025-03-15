@@ -14,23 +14,23 @@ parameters:
     displayName: Enter the Terraform script folder name
     type: string
   - name: runValidate
-    displayName: Run Validate Terraform
+    displayName: Run Terraform Validate 
     type: boolean
     default: true
   - name: runPlan
-    displayName: Run Plan Terraform
+    displayName: Run Terraform Plan
     type: boolean
     default: true
   - name: runApply
-    displayName: Run Apply Terraform
+    displayName: Run Terraform Apply
     type: boolean
     default: false
   - name: runPlanDestroy
-    displayName: Run Plan Destroy Terraform
+    displayName: Run Terraform Plan -Destroy
     type: boolean
     default: false
   - name: runDestroy
-    displayName: Run Destroy Terraform
+    displayName: Run Terraform Destroy
     type: boolean
     default: false
 
@@ -52,7 +52,6 @@ stages:
             inputs:
               provider: 'azurerm'
               command: 'init'
-              commandOptions: '-backend-config="storage_account_name=$(bkstrg)" -backend-config="container_name=$(bkcontainer)" -backend-config="key=$(bkstrgkey)" -backend-config="access_key=$(AZURE_STORAGE_KEY)"'
               workingDirectory: '$(System.DefaultWorkingDirectory)/${{parameters.inputName}}'
               backendServiceArm: 'Terraform-Service-connection'
               backendAzureRmResourceGroupName: '$(bkstrgrg)'
