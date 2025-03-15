@@ -48,7 +48,7 @@ stages:
 
           # Initialize Terraform
           - task: TerraformTaskV4@4
-            displayName: Initialize Terraform
+            displayName: Terraform Initialize 
             inputs:
               provider: 'azurerm'
               command: 'init'
@@ -62,7 +62,7 @@ stages:
 
           # Validate Terraform (Conditional)
           - task: TerraformTaskV4@4
-            displayName: Validate Terraform
+            displayName: Terraform Validate 
             condition: eq('${{ parameters.runValidate }}', true)
             inputs:
               provider: 'azurerm'
@@ -71,7 +71,7 @@ stages:
 
           # Plan Terraform (Conditional)
           - task: TerraformTaskV4@4
-            displayName: Plan Terraform
+            displayName: Terraform Plan 
             condition: eq('${{ parameters.runPlan }}', true)
             inputs:
               provider: 'azurerm'
@@ -81,22 +81,18 @@ stages:
 
           # Apply Terraform (Conditional)
           - task: TerraformTaskV4@4
-            displayName: Apply Terraform
+            displayName: Terraform Apply 
             condition: eq('${{ parameters.runApply }}', true)
             inputs:
               provider: 'azurerm'
               command: 'apply'
+              commandOptions: '-backend-config="storage_account_name=$(bkstrg)" -backend-config="container_name=$(bkcontainer)" -backend-config="key=$(bkstrgkey)" -backend-config="access_key=$(AZURE_STORAGE_KEY)'
               workingDirectory: '$(System.DefaultWorkingDirectory)/${{parameters.inputName}}'
               environmentServiceNameAzureRM: 'Terraform-Service-connection'
-              backendAzureRmResourceGroupName: '$(bkstrgrg)'
-              backendAzureRmStorageAccountName: '$(bkstrg)'
-              backendAzureRmContainerName: '$(bkcontainer)'
-              backendAzureRmKey: '$(bkstrgkey)'
-              backendAzureRmAccessKey: $(AZURE_STORAGE_KEY) 
 
           # Plan Destroy Terraform (Conditional)
           - task: TerraformTaskV4@4
-            displayName: Plan Destroy Terraform
+            displayName: Terraform Plan -Destroy 
             condition: eq('${{ parameters.runPlanDestroy }}', true)
             inputs:
               provider: 'azurerm'
@@ -107,16 +103,11 @@ stages:
 
           # Destroy Terraform (Conditional)
           - task: TerraformTaskV4@4
-            displayName: Destroy Terraform
+            displayName: Terraform Destroy 
             condition: eq('${{ parameters.runDestroy }}', true)
             inputs:
               provider: 'azurerm'
               command: 'destroy'
               workingDirectory: '$(System.DefaultWorkingDirectory)/${{parameters.inputName}}'
               environmentServiceNameAzureRM: 'Terraform-Service-connection'
-              commandOptions: '-auto-approve'
-              backendAzureRmResourceGroupName: '$(bkstrgrg)'
-              backendAzureRmStorageAccountName: '$(bkstrg)'
-              backendAzureRmContainerName: '$(bkcontainer)'
-              backendAzureRmKey: '$(bkstrgkey)'
-              backendAzureRmAccessKey: $(AZURE_STORAGE_KEY) 
+              commandOptions: '-auto-approve -backend-config="storage_account_name=$(bkstrg)" -backend-config="container_name=$(bkcontainer)" -backend-config="key=$(bkstrgkey)" -backend-config="access_key=$(AZURE_STORAGE_KEY)'
