@@ -53,7 +53,7 @@ stages:
               provider: 'azurerm'
               command: 'init'
               workingDirectory: '$(System.DefaultWorkingDirectory)/${{parameters.inputName}}'
-              backendServiceArm: 'Terraform-Service-connection'
+              backendServiceArm: 'Azure-DevOps-Service-Connection'
               backendAzureRmResourceGroupName: '$(bkstrgrg)'
               backendAzureRmStorageAccountName: '$(bkstrg)'
               backendAzureRmContainerName: '$(bkcontainer)'
@@ -77,7 +77,7 @@ stages:
               provider: 'azurerm'
               command: 'plan'
               workingDirectory: '$(System.DefaultWorkingDirectory)/${{parameters.inputName}}'
-              environmentServiceNameAzureRM: 'Terraform-Service-connection'
+              environmentServiceNameAzureRM: 'Azure-DevOps-Service-Connection'
 
           # Apply Terraform (Conditional)
           - task: TerraformTaskV4@4
@@ -87,7 +87,7 @@ stages:
               provider: 'azurerm'
               command: 'apply'
               workingDirectory: '$(System.DefaultWorkingDirectory)/${{parameters.inputName}}'
-              environmentServiceNameAzureRM: 'Terraform-Service-connection'
+              environmentServiceNameAzureRM: 'Azure-DevOps-Service-Connection'
 
           # Plan Destroy Terraform (Conditional)
           - task: TerraformTaskV4@4
@@ -97,7 +97,7 @@ stages:
               provider: 'azurerm'
               command: 'plan'
               workingDirectory: '$(System.DefaultWorkingDirectory)/${{parameters.inputName}}'
-              environmentServiceNameAzureRM: 'Terraform-Service-connection'
+              environmentServiceNameAzureRM: 'Azure-DevOps-Service-Connection'
               commandOptions: '-destroy'
 
           # Destroy Terraform (Conditional)
@@ -108,5 +108,5 @@ stages:
               provider: 'azurerm'
               command: 'destroy'
               workingDirectory: '$(System.DefaultWorkingDirectory)/${{parameters.inputName}}'
-              environmentServiceNameAzureRM: 'Terraform-Service-connection'
+              environmentServiceNameAzureRM: 'Azure-DevOps-Service-Connection'
               commandOptions: '-auto-approve'
