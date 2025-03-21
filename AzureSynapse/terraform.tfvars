@@ -1,0 +1,7 @@
+resource_group_name    = "synapse-rg"
+location              = "East US"
+storage_account_name   = "synapsestorage1234"
+synapse_workspace_name = "synapse-workspace"
+sql_admin_login        = "adminuser"
+sql_admin_password     = "P@ssword1234"
+sql_pool_name          = "synapse-sqlpool"
